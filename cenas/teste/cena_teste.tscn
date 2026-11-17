@@ -1,0 +1,283 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/teste/cena_teste.gd" id="1_cena"]
+[ext_resource type="Script" path="res://scripts/objetos/interagivel.gd" id="2_interagivel"]
+[ext_resource type="PackedScene" path="res://cenas/jogador/jogador.tscn" id="3_jogador"]
+[ext_resource type="PackedScene" path="res://cenas/ui/hud.tscn" id="4_hud"]
+[ext_resource type="PackedScene" path="res://cenas/ui/pos_processamento.tscn" id="5_pos"]
+
+[sub_resource type="ProceduralSkyMaterial" id="Ceu"]
+sky_top_color = Color(0.5, 0.55, 0.58, 1)
+sky_horizon_color = Color(0.7, 0.73, 0.7, 1)
+sky_curve = 0.2
+ground_bottom_color = Color(0.22, 0.25, 0.2, 1)
+ground_horizon_color = Color(0.7, 0.73, 0.7, 1)
+sun_angle_max = 60.0
+sun_curve = 0.05
+
+[sub_resource type="Sky" id="Sky_ceu"]
+sky_material = SubResource("Ceu")
+
+[sub_resource type="Environment" id="Ambiente"]
+background_mode = 2
+sky = SubResource("Sky_ceu")
+ambient_light_source = 3
+ambient_light_energy = 0.7
+tonemap_mode = 4
+fog_enabled = true
+fog_light_color = Color(0.56, 0.61, 0.56, 1)
+fog_density = 0.03
+fog_sky_affect = 0.7
+adjustment_enabled = true
+adjustment_saturation = 0.85
+
+[sub_resource type="StandardMaterial3D" id="Mat_grama"]
+albedo_color = Color(0.33, 0.42, 0.22, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Mat_terra"]
+albedo_color = Color(0.55, 0.28, 0.17, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Mat_parede"]
+albedo_color = Color(0.9, 0.89, 0.84, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Mat_telhado"]
+albedo_color = Color(0.76, 0.37, 0.2, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Mat_janela"]
+albedo_color = Color(0.2, 0.38, 0.62, 1)
+roughness = 0.6
+
+[sub_resource type="StandardMaterial3D" id="Mat_madeira"]
+albedo_color = Color(0.38, 0.27, 0.18, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Mat_balde"]
+albedo_color = Color(0.55, 0.57, 0.58, 1)
+roughness = 0.4
+
+[sub_resource type="StandardMaterial3D" id="Mat_folhas"]
+albedo_color = Color(0.2, 0.33, 0.16, 1)
+roughness = 0.9
+
+[sub_resource type="BoxShape3D" id="Forma_chao"]
+size = Vector3(160, 1, 160)
+
+[sub_resource type="BoxMesh" id="Malha_chao"]
+material = SubResource("Mat_grama")
+size = Vector3(160, 1, 160)
+
+[sub_resource type="BoxMesh" id="Malha_estrada"]
+material = SubResource("Mat_terra")
+size = Vector3(4, 0.05, 160)
+
+[sub_resource type="BoxShape3D" id="Forma_casa"]
+size = Vector3(8, 3, 6)
+
+[sub_resource type="BoxMesh" id="Malha_casa"]
+material = SubResource("Mat_parede")
+size = Vector3(8, 3, 6)
+
+[sub_resource type="PrismMesh" id="Malha_telhado"]
+material = SubResource("Mat_telhado")
+size = Vector3(6.8, 1.6, 8.8)
+
+[sub_resource type="BoxMesh" id="Malha_janela"]
+material = SubResource("Mat_janela")
+size = Vector3(1.1, 1, 0.08)
+
+[sub_resource type="BoxMesh" id="Malha_porta"]
+material = SubResource("Mat_madeira")
+size = Vector3(1.1, 2.1, 0.08)
+
+[sub_resource type="CylinderMesh" id="Malha_balde"]
+material = SubResource("Mat_balde")
+top_radius = 0.18
+bottom_radius = 0.14
+height = 0.32
+
+[sub_resource type="CylinderShape3D" id="Forma_balde"]
+height = 0.32
+radius = 0.18
+
+[sub_resource type="CylinderMesh" id="Malha_tronco"]
+material = SubResource("Mat_madeira")
+top_radius = 0.15
+bottom_radius = 0.22
+height = 3.0
+
+[sub_resource type="SphereMesh" id="Malha_copa"]
+material = SubResource("Mat_folhas")
+radius = 1.6
+height = 2.6
+radial_segments = 8
+rings = 4
+
+[sub_resource type="CylinderShape3D" id="Forma_tronco"]
+height = 3.0
+radius = 0.22
+
+[sub_resource type="BoxShape3D" id="Forma_gatilho"]
+size = Vector3(8, 3, 4)
+
+[node name="CenaTeste" type="Node3D"]
+script = ExtResource("1_cena")
+
+[node name="Ambiente" type="WorldEnvironment" parent="."]
+environment = SubResource("Ambiente")
+
+[node name="Sol" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866, 0.383, -0.3214, 0, 0.6428, 0.766, 0.5, -0.6634, 0.5567, 0, 0, 0)
+light_color = Color(0.95, 0.93, 0.88, 1)
+light_energy = 0.8
+shadow_enabled = true
+directional_shadow_max_distance = 60.0
+
+[node name="Chao" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+
+[node name="Colisao" type="CollisionShape3D" parent="Chao"]
+shape = SubResource("Forma_chao")
+
+[node name="Malha" type="MeshInstance3D" parent="Chao"]
+mesh = SubResource("Malha_chao")
+
+[node name="Estrada" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0.02, 0)
+mesh = SubResource("Malha_estrada")
+
+[node name="Casa" type="StaticBody3D" parent="."]
+
+[node name="Colisao" type="CollisionShape3D" parent="Casa"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("Forma_casa")
+
+[node name="Paredes" type="MeshInstance3D" parent="Casa"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("Malha_casa")
+
+[node name="Telhado" type="MeshInstance3D" parent="Casa"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0, 3.8, 0)
+mesh = SubResource("Malha_telhado")
+
+[node name="Porta" type="MeshInstance3D" parent="Casa"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, 3.02)
+mesh = SubResource("Malha_porta")
+
+[node name="JanelaEsq" type="MeshInstance3D" parent="Casa"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 1.7, 3.02)
+mesh = SubResource("Malha_janela")
+
+[node name="JanelaDir" type="MeshInstance3D" parent="Casa"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 1.7, 3.02)
+mesh = SubResource("Malha_janela")
+
+[node name="Arvore1" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 6)
+
+[node name="Colisao" type="CollisionShape3D" parent="Arvore1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("Forma_tronco")
+
+[node name="Tronco" type="MeshInstance3D" parent="Arvore1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("Malha_tronco")
+
+[node name="Copa" type="MeshInstance3D" parent="Arvore1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.6, 0)
+mesh = SubResource("Malha_copa")
+
+[node name="Arvore2" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, -4)
+
+[node name="Colisao" type="CollisionShape3D" parent="Arvore2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("Forma_tronco")
+
+[node name="Tronco" type="MeshInstance3D" parent="Arvore2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("Malha_tronco")
+
+[node name="Copa" type="MeshInstance3D" parent="Arvore2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.6, 0)
+mesh = SubResource("Malha_copa")
+
+[node name="Arvore3" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, -8)
+
+[node name="Colisao" type="CollisionShape3D" parent="Arvore3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("Forma_tronco")
+
+[node name="Tronco" type="MeshInstance3D" parent="Arvore3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("Malha_tronco")
+
+[node name="Copa" type="MeshInstance3D" parent="Arvore3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.6, 0)
+mesh = SubResource("Malha_copa")
+
+[node name="Arvore4" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0, 10)
+
+[node name="Colisao" type="CollisionShape3D" parent="Arvore4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("Forma_tronco")
+
+[node name="Tronco" type="MeshInstance3D" parent="Arvore4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("Malha_tronco")
+
+[node name="Copa" type="MeshInstance3D" parent="Arvore4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.6, 0)
+mesh = SubResource("Malha_copa")
+
+[node name="Arvore5" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -14)
+
+[node name="Colisao" type="CollisionShape3D" parent="Arvore5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("Forma_tronco")
+
+[node name="Tronco" type="MeshInstance3D" parent="Arvore5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("Malha_tronco")
+
+[node name="Copa" type="MeshInstance3D" parent="Arvore5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.6, 0)
+mesh = SubResource("Malha_copa")
+
+[node name="BaldeMilho" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 5)
+script = ExtResource("2_interagivel")
+texto_interacao = "Pegar o balde de milho"
+uma_vez = true
+
+[node name="Colisao" type="CollisionShape3D" parent="BaldeMilho"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.16, 0)
+shape = SubResource("Forma_balde")
+
+[node name="Malha" type="MeshInstance3D" parent="BaldeMilho"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.16, 0)
+mesh = SubResource("Malha_balde")
+
+[node name="GatilhoFundos" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -6)
+collision_layer = 0
+collision_mask = 2
+
+[node name="Colisao" type="CollisionShape3D" parent="GatilhoFundos"]
+shape = SubResource("Forma_gatilho")
+
+[node name="Jogador" parent="." instance=ExtResource("3_jogador")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+
+[node name="HUD" parent="." instance=ExtResource("4_hud")]
+
+[node name="PosProcessamento" parent="." instance=ExtResource("5_pos")]
+
+[connection signal="interagido" from="BaldeMilho" to="." method="_ao_pegar_balde"]
+[connection signal="body_entered" from="GatilhoFundos" to="." method="_ao_entrar_fundos"]

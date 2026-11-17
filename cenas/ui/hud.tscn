@@ -1,0 +1,124 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/hud.gd" id="1_hud"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_texto"]
+font_size = 18
+outline_size = 6
+outline_color = Color(0, 0, 0, 0.85)
+
+[sub_resource type="LabelSettings" id="LabelSettings_titulo"]
+font_size = 20
+font_color = Color(0.95, 0.92, 0.8, 1)
+outline_size = 6
+outline_color = Color(0, 0, 0, 0.85)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fundo"]
+bg_color = Color(0, 0, 0, 0.5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_barra"]
+bg_color = Color(0.85, 0.88, 0.9, 0.85)
+
+[node name="HUD" type="CanvasLayer"]
+layer = 2
+script = ExtResource("1_hud")
+
+[node name="Raiz" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Mira" type="ColorRect" parent="Raiz"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 2.0
+offset_bottom = 2.0
+mouse_filter = 2
+color = Color(1, 1, 1, 0.45)
+
+[node name="Prompt" type="Label" parent="Raiz"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = 20.0
+offset_right = 250.0
+offset_bottom = 48.0
+text = "[E] Interagir"
+label_settings = SubResource("LabelSettings_texto")
+horizontal_alignment = 1
+
+[node name="PainelObjetivos" type="VBoxContainer" parent="Raiz"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 20.0
+offset_top = 18.0
+offset_right = 420.0
+offset_bottom = 220.0
+mouse_filter = 2
+
+[node name="Titulo" type="Label" parent="Raiz/PainelObjetivos"]
+layout_mode = 2
+text = "Objetivos"
+label_settings = SubResource("LabelSettings_titulo")
+
+[node name="ListaObjetivos" type="VBoxContainer" parent="Raiz/PainelObjetivos"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Legenda" type="Label" parent="Raiz"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -420.0
+offset_top = -120.0
+offset_right = 420.0
+offset_bottom = -64.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Legenda"
+label_settings = SubResource("LabelSettings_texto")
+horizontal_alignment = 1
+vertical_alignment = 2
+autowrap_mode = 3
+
+[node name="BarraFolego" type="ProgressBar" parent="Raiz"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -110.0
+offset_top = -44.0
+offset_right = 110.0
+offset_bottom = -38.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_fundo")
+theme_override_styles/fill = SubResource("StyleBoxFlat_barra")
+max_value = 1.0
+step = 0.001
+value = 1.0
+show_percentage = false
